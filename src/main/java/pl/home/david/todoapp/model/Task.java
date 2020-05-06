@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tasks")
-class Task {
+public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,7 +14,7 @@ class Task {
     private String description;
     private boolean done;
 
-    Task(){}
+    public Task(){}
 
     public int getId() {
         return id;
