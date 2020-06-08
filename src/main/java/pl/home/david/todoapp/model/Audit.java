@@ -1,15 +1,15 @@
 package pl.home.david.todoapp.model;
 
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Embeddable;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
 
-@MappedSuperclass
-abstract class BaseAuditableEntity {
+@Embeddable
+class Audit {
 
     private LocalDateTime createdOn;
-    private LocalDateTime updated_on;
+    private LocalDateTime updatedOn;
 
     @PrePersist
     void prePersist() {
@@ -18,6 +18,6 @@ abstract class BaseAuditableEntity {
 
     @PreUpdate
     void preUpdate() {
-        updated_on = LocalDateTime.now();
+        updatedOn = LocalDateTime.now();
     }
 }
