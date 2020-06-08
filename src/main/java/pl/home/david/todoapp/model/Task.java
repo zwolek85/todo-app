@@ -2,10 +2,11 @@ package pl.home.david.todoapp.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
-public class Task {
+public class Task extends BaseAuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,14 +14,17 @@ public class Task {
     @NotBlank(message = "Task's description must be not null and empty")
     private String description;
     private boolean done;
+    private LocalDateTime deadline;
 
-    public Task(){}
+
+    public Task() {
+    }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    void setId(int id) {
         this.id = id;
     }
 
@@ -28,7 +32,7 @@ public class Task {
         return description;
     }
 
-     void setDescription(String description) {
+    void setDescription(String description) {
         this.description = description;
     }
 
@@ -36,7 +40,21 @@ public class Task {
         return done;
     }
 
-     void setDone(boolean done) {
+    public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
+    }
+
+    public void updateFrom(final Task source) {
+        description = source.description;
+        done = source.done;
+        deadline = source.deadline;
     }
 }

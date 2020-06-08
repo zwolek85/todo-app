@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.home.david.todoapp.model.Task;
 import pl.home.david.todoapp.model.TaskRepository;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -25,7 +26,7 @@ class TaskController {
     @PostMapping("/tasks")
     ResponseEntity<?> creatTask(@RequestBody @Valid Task toCreate) throws URISyntaxException {
         Task task = taskRepository.save(toCreate);
-        URI uri = new URI("/"+task.getId());
+        URI uri = new URI("/" + task.getId());
         return ResponseEntity.created(uri).build();
     }
 
@@ -53,8 +54,23 @@ class TaskController {
         if (!taskRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        toUpdate.setId(id);
-        taskRepository.save(toUpdate);
+        taskRepository.findById(id).ifPresent(task -> {
+            task.updateFrom(toUpdate);
+            taskRepository.save(task);
+        });
+        return ResponseEntity.noContent().build();
+    }
+
+    @Transactional
+    @PatchMapping("/tasks/{id}")
+    public ResponseEntity<?> patchTask(@PathVariable int id) {
+        if (!taskRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        taskRepository.findById(id).ifPresent(task -> {
+            task.setDone(!task.isDone());
+        });
         return ResponseEntity.noContent().build();
     }
 
