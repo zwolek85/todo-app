@@ -17,6 +17,8 @@ public interface TaskRepository {
 
     boolean existsById(Integer id);
 
+    boolean existsByDoneIsFalseAndTaskGroup_Id(Integer taskGroupId);
+
     List<Task> findByDone(boolean done);
 
     Task save(Task task);

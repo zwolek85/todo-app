@@ -18,6 +18,10 @@ public class Task {
     @Embedded
     private Audit audit = new Audit();
 
+    @ManyToOne
+    @JoinColumn(name = "task_groups_id")
+    private TaskGroup taskGroup;
+
     public Task() {
     }
 
@@ -53,9 +57,18 @@ public class Task {
         this.deadline = deadline;
     }
 
+    TaskGroup getTaskGroup() {
+        return taskGroup;
+    }
+
+    void setTaskGroup(TaskGroup taskGroup) {
+        this.taskGroup = taskGroup;
+    }
+
     public void updateFrom(final Task source) {
         description = source.description;
         done = source.done;
         deadline = source.deadline;
+        taskGroup = source.taskGroup;
     }
 }
