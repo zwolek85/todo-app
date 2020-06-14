@@ -25,6 +25,11 @@ public class Task {
     public Task() {
     }
 
+    public Task(@NotBlank(message = "Task's description must be not null and empty") String description, LocalDateTime deadline) {
+        this.description = description;
+        this.deadline = deadline;
+    }
+
     public int getId() {
         return id;
     }
