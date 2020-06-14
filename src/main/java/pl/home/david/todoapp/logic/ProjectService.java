@@ -28,7 +28,7 @@ public class ProjectService {
         return repository.save(save);
     }
 
-    private GroupReadModel createGroup(LocalDateTime deadline, int projectId) {
+    public GroupReadModel createGroup(LocalDateTime deadline, int projectId) {
         if (!config.getTemplate().isAllowMultipleTaskFromTemplate()
                 && taskGroupRepository.existsByDoneIsFalseAndProject_Id(projectId)) {
             throw new IllegalStateException("Only one undone group from project is aloowed");
