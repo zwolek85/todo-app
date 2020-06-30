@@ -25,6 +25,14 @@ public class Task {
     public Task() {
     }
 
+    public Task(String description, LocalDateTime deadline, TaskGroup taskGroup) {
+        this.description = description;
+        this.deadline = deadline;
+        if (taskGroup != null) {
+            this.taskGroup = taskGroup;
+        }
+    }
+
     public Task(@NotBlank(message = "Task's description must be not null and empty") String description, LocalDateTime deadline) {
         this.description = description;
         this.deadline = deadline;

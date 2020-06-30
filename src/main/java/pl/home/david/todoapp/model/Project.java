@@ -14,16 +14,18 @@ public class Project {
     @NotBlank(message = "Projects's description must be not null and empty")
     private String description;
 
-
     @OneToMany(mappedBy = "project")
     private Set<TaskGroup> groups;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
+    private Set<ProjectStep> steps;
+
+    public Project() {
+    }
 
     public int getId() {
         return id;
     }
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
-    private Set<ProjectStep> steps;
 
     public void setId(int id) {
         this.id = id;

@@ -11,7 +11,7 @@ import pl.home.david.todoapp.model.projection.GroupWriteModel;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+
 class TaskGroupService {
 
     private TaskGroupRepository repository;
@@ -40,6 +40,7 @@ class TaskGroupService {
         TaskGroup result = repository.findById(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("TaskGroup with given id not found"));
         result.setDone(!result.isDone());
+        repository.save(result);
     }
 
 }
