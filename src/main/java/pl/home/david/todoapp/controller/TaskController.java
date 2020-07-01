@@ -15,6 +15,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/tasks")
 class TaskController {
     public static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskRepository taskRepository;
@@ -23,33 +24,38 @@ class TaskController {
         this.taskRepository = taskRepository;
     }
 
-    @PostMapping("/tasks")
+    @PostMapping
     ResponseEntity<?> creatTask(@RequestBody @Valid Task toCreate) throws URISyntaxException {
         Task task = taskRepository.save(toCreate);
         URI uri = new URI("/" + task.getId());
         return ResponseEntity.created(uri).build();
     }
 
-    @GetMapping(value = "/tasks", params = {"!sort", "!page", "!size"})
+    @GetMapping(params = {"!sort", "!page", "!size"})
     ResponseEntity<List<Task>> readAllTask() {
         logger.warn("Exposing all the task");
         return ResponseEntity.ok(taskRepository.findAll());
     }
 
-    @GetMapping(value = "/tasks")
+    @GetMapping
     ResponseEntity<?> readAllTask(Pageable page) {
         logger.info("Custom page");
         return ResponseEntity.ok(taskRepository.findAll(page).getContent());
     }
 
-    @GetMapping("/tasks/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<?> getTask(@PathVariable int id) {
         return taskRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/tasks/{id}")
+    @GetMapping(value = "/search/done")
+    ResponseEntity<List<Task>> readDoneTasks(@RequestParam(defaultValue = "true") boolean state) {
+        return ResponseEntity.ok(taskRepository.findByDone(state));
+    }
+
+    @PutMapping("/{id}")
     ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
         if (!taskRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -62,7 +68,7 @@ class TaskController {
     }
 
     @Transactional
-    @PatchMapping("/tasks/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> patchTask(@PathVariable int id) {
         if (!taskRepository.existsById(id)) {
             return ResponseEntity.notFound().build();

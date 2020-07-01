@@ -2,10 +2,12 @@ package pl.home.david.todoapp.controller;
 
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.home.david.todoapp.TaskConfigurationProperties;
 
 @RestController
+@RequestMapping("/info")
 class InfoController {
 
     private DataSourceProperties dataSource;
@@ -17,12 +19,12 @@ class InfoController {
         this.taskProp = taskProp;
     }
 
-    @GetMapping("/info/url")
+    @GetMapping("/url")
     String url() {
         return dataSource.getUrl();
     }
 
-    @GetMapping("/info/prop")
+    @GetMapping("/prop")
     boolean myProp() {
         return taskProp.getTemplate().isAllowMultipleTaskFromTemplate();
     }
