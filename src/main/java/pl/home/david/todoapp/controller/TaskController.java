@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.home.david.todoapp.logic.TaskService;
 import pl.home.david.todoapp.model.Task;
 import pl.home.david.todoapp.model.TaskRepository;
 
@@ -13,15 +14,19 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/tasks")
 class TaskController {
     public static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskRepository taskRepository;
+    private TaskService taskService;
 
-    TaskController(final TaskRepository taskRepository) {
+
+    TaskController(final TaskRepository taskRepository, TaskService taskService) {
         this.taskRepository = taskRepository;
+        this.taskService = taskService;
     }
 
     @PostMapping
@@ -32,9 +37,9 @@ class TaskController {
     }
 
     @GetMapping(params = {"!sort", "!page", "!size"})
-    ResponseEntity<List<Task>> readAllTask() {
+    CompletableFuture<ResponseEntity<List<Task>>> readAllTask() {
         logger.warn("Exposing all the task");
-        return ResponseEntity.ok(taskRepository.findAll());
+        return taskService.findAllAsync().thenApply(ResponseEntity::ok);
     }
 
     @GetMapping
