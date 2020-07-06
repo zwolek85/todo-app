@@ -78,6 +78,11 @@ public class TestConfiguration {
                 tasks.put(key, task);
                 return tasks.get(key);
             }
+
+            @Override
+            public List<Task> findAllByTaskGroup_Id(Integer id) {
+                return List.of();
+            }
         };
     }
 }

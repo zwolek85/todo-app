@@ -42,4 +42,9 @@ public class TestTaskRepository implements TaskRepository {
     public Task save(Task task) {
         return tasks.put(tasks.size() + 1, task);
     }
+
+    @Override
+    public List<Task> findAllByTaskGroup_Id(Integer id) {
+        return List.of();
+    }
 }

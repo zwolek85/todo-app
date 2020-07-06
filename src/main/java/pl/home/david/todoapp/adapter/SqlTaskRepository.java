@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import pl.home.david.todoapp.model.Task;
 import pl.home.david.todoapp.model.TaskRepository;
 
+import java.util.List;
+
 @Repository
 interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Integer> {
 
@@ -17,4 +19,8 @@ interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Integer>
 
     @Override
     boolean existsByDoneIsFalseAndTaskGroup_Id(Integer taskGroupId);
+
+    @Override
+    List<Task> findAllByTaskGroup_Id(Integer id);
+
 }

@@ -24,4 +24,6 @@ public interface TaskRepository {
     List<Task> findByDone(boolean done);
 
     Task save(Task task);
+
+    List<Task> findAllByTaskGroup_Id(Integer id);
 }

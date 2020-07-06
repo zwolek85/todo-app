@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-class TaskGroupService {
+public class TaskGroupService {
 
     private TaskGroupRepository repository;
     private TaskRepository taskRepository;
@@ -33,7 +33,7 @@ class TaskGroupService {
                 .collect(Collectors.toList());
     }
 
-    private void toggledGroup(int groupId) {
+    public void toggledGroup(int groupId) {
         if (taskRepository.existsByDoneIsFalseAndTaskGroup_Id(groupId)) {
             throw new IllegalStateException("Group has undone tasks, Done all tasks first");
         }
