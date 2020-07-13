@@ -2,6 +2,7 @@ package pl.home.david.todoapp.logic;
 
 import org.springframework.stereotype.Service;
 import pl.home.david.todoapp.TaskConfigurationProperties;
+import pl.home.david.todoapp.model.Project;
 import pl.home.david.todoapp.model.TaskGroup;
 import pl.home.david.todoapp.model.TaskGroupRepository;
 import pl.home.david.todoapp.model.TaskRepository;
@@ -23,7 +24,11 @@ public class TaskGroupService {
     }
 
     public GroupReadModel createGroup(GroupWriteModel source) {
-        TaskGroup result = repository.save(source.toTaskGroup());
+        return createGroup(source, null);
+    }
+
+    public GroupReadModel createGroup(GroupWriteModel source, Project project) {
+        TaskGroup result = repository.save(source.toTaskGroup(project));
         return new GroupReadModel(result);
     }
 
@@ -42,5 +47,4 @@ public class TaskGroupService {
         result.setDone(!result.isDone());
         repository.save(result);
     }
-
 }

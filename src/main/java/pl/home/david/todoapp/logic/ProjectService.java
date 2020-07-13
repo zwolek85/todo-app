@@ -1,7 +1,10 @@
 package pl.home.david.todoapp.logic;
 
 import pl.home.david.todoapp.TaskConfigurationProperties;
-import pl.home.david.todoapp.model.*;
+import pl.home.david.todoapp.model.Project;
+import pl.home.david.todoapp.model.ProjectRepository;
+import pl.home.david.todoapp.model.ProjectStep;
+import pl.home.david.todoapp.model.TaskGroupRepository;
 import pl.home.david.todoapp.model.projection.GroupReadModel;
 import pl.home.david.todoapp.model.projection.GroupTaskWriteModel;
 import pl.home.david.todoapp.model.projection.GroupWriteModel;
@@ -51,7 +54,7 @@ public class ProjectService {
                                         return createGroupTaskWriteModel(projectStep, deadline);
                                     }).collect(Collectors.toSet())
                     );
-                    return taskGroupService.createGroup(targetGroup);
+                    return taskGroupService.createGroup(targetGroup, project);
                 }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
         return result;
     }
